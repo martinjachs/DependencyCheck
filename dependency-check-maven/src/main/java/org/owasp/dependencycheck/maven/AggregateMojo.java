@@ -140,7 +140,7 @@ public class AggregateMojo extends BaseDependencyCheckMojo {
                     File mpp = new File(project.getBasedir(), m);
                     mpp = mpp.getCanonicalFile();
                     if (mpp.compareTo(mod.getBasedir()) == 0 && descendants.add(mod)) {
-                        LOGGER.fine(String.format("Decendent module %s added", mod.getName()));
+                        LOGGER.fine(String.format("Descendant module %s added", mod.getName()));
                     }
                 } catch (IOException ex) {
                     LOGGER.log(Level.FINE, "Unable to determine module path", ex);
@@ -152,22 +152,22 @@ public class AggregateMojo extends BaseDependencyCheckMojo {
             for (MavenProject p : getReactorProjects()) {
                 if (project.equals(p.getParent()) || descendants.contains(p.getParent())) {
                     if (descendants.add(p)) {
-                        LOGGER.fine(String.format("Decendent %s added", p.getName()));
+                        LOGGER.fine(String.format("Descendant %s added", p.getName()));
                     }
                     for (MavenProject modTest : getReactorProjects()) {
                         if (p.getModules() != null && p.getModules().contains(modTest.getName())
                                 && descendants.add(modTest)) {
-                            LOGGER.fine(String.format("Decendent %s added", modTest.getName()));
+                            LOGGER.fine(String.format("Descendant %s added", modTest.getName()));
                         }
                     }
                 }
-                for (MavenProject dec : descendants) {
+                for (MavenProject dec : new ArrayList<MavenProject>(descendants)) {
                     for (String mod : dec.getModules()) {
                         try {
                             File mpp = new File(dec.getBasedir(), mod);
                             mpp = mpp.getCanonicalFile();
                             if (mpp.compareTo(p.getBasedir()) == 0 && descendants.add(p)) {
-                                LOGGER.fine(String.format("Decendent module %s added", p.getName()));
+                                LOGGER.fine(String.format("Descendant module %s added", p.getName()));
                             }
                         } catch (IOException ex) {
                             LOGGER.log(Level.FINE, "Unable to determine module path", ex);
